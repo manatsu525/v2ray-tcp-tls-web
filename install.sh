@@ -4,7 +4,7 @@ export LANG=en_US
 export LANGUAGE=en_US.UTF-8
 
 branch="master"
-VERSION="$(curl -fsL https://api.github.com/repos/phlinhng/v2ray-tcp-tls-web/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')"
+VERSION="$(curl -fsL https://api.github.com/repos/manatsu525/v2ray-tcp-tls-web/releases/latest | grep tag_name | sed -E 's/.*"v(.*)".*/\1/')"
 
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
   sudoCmd="sudo"
@@ -50,16 +50,16 @@ ${sudoCmd} ${systemPackage} install curl wget jq lsof coreutils unzip -y -qq
 ${sudoCmd} mkdir -p /usr/local/etc/v2script
 
 if [ ! -f "/usr/local/etc/v2script/config.json" ]; then
-  ${sudoCmd} wget -q https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/config/v2script.json -O /usr/local/etc/v2script/config.json
+  ${sudoCmd} wget -q https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/config/v2script.json -O /usr/local/etc/v2script/config.json
 elif [ -f "/usr/local/etc/v2script/config.json" ]; then
-  ${sudoCmd} bash <(curl -sL https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/tools/migrate_v2ray.sh)
-  ${sudoCmd} bash <(curl -sL https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/tools/migrate_tjgo.sh)
+  ${sudoCmd} bash <(curl -sL https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/tools/migrate_v2ray.sh)
+  ${sudoCmd} bash <(curl -sL https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/tools/migrate_tjgo.sh)
 fi
 
-${sudoCmd} wget -q -N https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/src/v2script.sh -O /usr/local/bin/v2script
+${sudoCmd} wget -q -N https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/src/v2script.sh -O /usr/local/bin/v2script
 ${sudoCmd} chmod +x /usr/local/bin/v2script
 
-${sudoCmd} wget -q -N https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/src/v2sub.sh -O /usr/local/bin/v2sub
+${sudoCmd} wget -q -N https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/src/v2sub.sh -O /usr/local/bin/v2sub
 ${sudoCmd} chmod +x /usr/local/bin/v2sub
 
 jq -r ".version = \"${VERSION}\"" /usr/local/etc/v2script/config.json > tmp.$$.json && ${sudoCmd} mv tmp.$$.json /usr/local/etc/v2script/config.json
