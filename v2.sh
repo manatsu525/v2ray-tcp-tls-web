@@ -67,7 +67,7 @@ write_json() {
 } ## write_json [path-to-file] [key = value]
 
 checkIP() {
-  local realIP="$(curl -s `curl -s https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/master/custom/ip_api`)"
+  local realIP="$(curl -s `curl -s https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/master/custom/ip_api`)"
   local resolvedIP="$(ping $1 -c 1 | head -n 1 | grep  -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
 
   if [[ "${realIP}" == "${resolvedIP}" ]]; then
@@ -176,13 +176,13 @@ EOF
 
   # create config files
   colorEcho ${BLUE} "Setting v2Ray"
-  wget -q https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/config/v2ray.json -O /tmp/v2ray.json
+  wget -q https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/config/v2ray.json -O /tmp/v2ray.json
   sed -i "s/FAKEPORT/$(read_json /etc/v2ray/config.json '.inbounds[0].port')/g" /tmp/v2ray.json
   sed -i "s/FAKEUUID/$(read_json /etc/v2ray/config.json '.inbounds[0].settings.clients[0].id')/g" /tmp/v2ray.json
   ${sudoCmd} /bin/cp -f /tmp/v2ray.json /etc/v2ray/config.json
 
   colorEcho ${BLUE} "Setting tls-shunt-proxy"
-  wget -q https://raw.githubusercontent.com/phlinhng/v2ray-tcp-tls-web/${branch}/config/tls-shunt-proxy.yaml -O /tmp/config_new.yaml
+  wget -q https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/config/tls-shunt-proxy.yaml -O /tmp/config_new.yaml
   sed -i "s/FAKEV2DOMAIN/$(read_json /usr/local/etc/v2script/config.json '.v2ray.tlsHeader')/g" /tmp/config_new.yaml
   sed -i "s/##V2RAY@//g" /tmp/config_new.yaml
   ${sudoCmd} /bin/cp -f /tmp/config_new.yaml /etc/tls-shunt-proxy/config.yaml
