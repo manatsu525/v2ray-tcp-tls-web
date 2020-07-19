@@ -330,7 +330,6 @@ timeouts none
         except /sumire
     }
     proxy /sumire 127.0.0.1:3567 {
-        without /sumire
         websocket
     }
 }
