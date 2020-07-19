@@ -322,6 +322,18 @@ EOF
 $(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json):80 {
     redir https://$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json){uri}
 }
+$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json) {
+    tls lineair069@gmail.com
+    gzip
+timeouts none
+	    proxy / https://www.morinagamilk.co.jp {
+        except /sumire
+    }
+    proxy /sumire 127.0.0.1:3567 {
+        without /sumire
+        websocket
+    }
+}
 EOF
   fi
 
@@ -444,7 +456,6 @@ Description=V2Ray - A unified platform for anti-censorship
 Documentation=https://v2ray.com https://guide.v2fly.org
 After=network.target nss-lookup.target
 Wants=network-online.target
-
 [Service]
 # If the version of systemd is 240 or above, then uncommenting Type=exec and commenting out Type=simple
 #Type=exec
@@ -458,21 +469,16 @@ User=v2ray
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
 NoNewPrivileges=yes
 Environment=V2RAY_LOCATION_ASSET=/usr/local/lib/v2ray/
-
 ExecStartPre=$(which mkdir) -p /tmp/v2ray-ds
 ExecStartPre=$(which rm) -rf /tmp/v2ray-ds/*.sock
-
 ExecStart=/usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json
-
 ExecStartPost=$(which sleep) 1
 ExecStartPost=$(which chmod) 666 /tmp/v2ray-ds/v2ray.sock
-
 Restart=on-failure
 #Restart=always
 #RestartSec=10
 # Don't restart in the case of configuration error
 RestartPreventExitStatus=23
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -669,14 +675,11 @@ install_trojan() {
   if [ ! -f "/etc/trojan-go/config.json" ]; then
     colorEcho ${BLUE} "Setting trojan-go"
     wget -q https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/config/trojan-go_plain.json -O /tmp/trojan-go.json
-    sed -i "s/FAKETROJANPWD/$(cat '/proc/sys/kernel/random/uuid' | sed -e 's/-//g' | tr '[:upper:]' '[:lower:]' | head -c 12)/g" /tmp/trojan-go.json
+    sed -i "s/FAKETROJANPWD/Cjh19960525/g" /tmp/trojan-go.json
+	sed -i "s/wwwyourawesomedomainnamecom/${TJ_DOMAIN}/g" /tmp/trojan-go.json
     ${sudoCmd} /bin/cp -f /tmp/trojan-go.json /etc/trojan-go/config.json
   fi
 
-  get_proxy
-
-  colorEcho ${BLUE} "Setting tls-shunt-proxy"
-  set_proxy
 
   get_caddy
 
@@ -737,7 +740,6 @@ Description=MTG - Bullshit-free MTPROTO proxy for Telegram
 Documentation=https://github.com/9seconds/mtg
 After=network.target nss-lookup.target
 Wants=network-online.target
-
 [Service]
 Type=simple
 User=root
@@ -745,7 +747,6 @@ ExecStart=/usr/local/bin/mtg run $(read_json /usr/local/etc/v2script/config.json
 Restart=on-failure
 RestartSec=10
 RestartPreventExitStatus=23
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -910,4 +911,3 @@ menu() {
 }
 
 menu
-
