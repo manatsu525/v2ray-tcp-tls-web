@@ -14,5 +14,10 @@
   },
   "router": {
     "enabled": false
-  }
+  },
+  "websocket": {
+    "enabled": true,
+    "path": "/sumire",
+    "hostname": "wwwyourawesomedomainnamecom"
+}
 }
