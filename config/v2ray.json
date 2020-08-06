@@ -1,58 +1,18 @@
 {
-  "inbounds": [
-    {
-      "protocol": "vmess",
-      "listen": "127.0.0.1",
-      "port": FAKEPORT,
-      "settings": {
-        "clients": [
-          {
-            "id": "FAKEUUID",
-            "alterId": 0
-          }
-        ]
-      },
-      "streamSettings": {
-        "network": "domainsocket",
-        "dsSettings": {
-          "path": "/tmp/v2ray-ds/v2ray.sock"
-        }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [ "http", "tls" ]
-      }
+"inbound": {
+    "protocol": "vmess",
+    "listen": "127.0.0.1",
+ "port": 9750,
+ "settings": {"clients": [
+        {"id": "FAKEUUID",
+		 "level": 1,
+		 "alterId": 16}
+    ]},
+ "streamSettings": {
+ "network": "ws",
+ "wsSettings": {"path": "/sumire"}
     }
-  ],
-  "outbounds": [
-    {
-      "tag": "direct",
-      "protocol": "freedom",
-      "settings": {}
-    },
-    {
-      "tag": "blocked",
-      "protocol": "blackhole",
-      "settings": {}
-    }
-  ],
-  "routing": {
-    "domainStrategy": "AsIs",
-    "rules": [
-      {
-        "type": "field",
-        "ip": [
-          "geoip:private"
-        ],
-        "outboundTag": "blocked"
-      },
-      {
-        "type": "field",
-        "protocol": [
-          "bittorrent"
-        ],
-        "outboundTag": "blocked"
-      }
-    ]
-  }
+},
+
+"outbound": {"protocol": "freedom"}
 }
