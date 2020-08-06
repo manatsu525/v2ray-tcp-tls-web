@@ -313,8 +313,19 @@ $(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json):80 {
 EOF
   elif [[ "$(read_json /usr/local/etc/v2script/config.json '.v2ray.installed')" == "true" ]]; then
     cat >> ${caddyserver_file} <<-EOF
-$(jq --raw-output '.v2ray.tlsHeader' /usr/local/etc/v2script/config.json):80 {
-    redir https://$(jq --raw-output '.v2ray.tlsHeader' /usr/local/etc/v2script/config.json){uri}
+$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json):80 {
+    redir https://$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json){uri}
+}
+$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json) {
+    tls lineair069@gmail.com
+    gzip
+timeouts none
+	    proxy / https://www.morinagamilk.co.jp {
+        except /sumire
+    }
+    proxy /sumire 127.0.0.1:9750 {
+        websocket
+    }
 }
 EOF
   elif [[ "$(read_json /usr/local/etc/v2script/config.json '.trojan.installed')" == "true" ]]; then
@@ -523,8 +534,7 @@ install_v2ray() {
   # install v2ray-core
   build_v2ray
 
-  # install tls-shunt-proxy
-  get_proxy
+
 
   # install caddy
   ${sudoCmd} docker rm $(${sudoCmd} docker stop $(${sudoCmd} docker ps -q --filter ancestor=abiosoft/caddy) 2>/dev/null) 2>/dev/null
@@ -539,19 +549,14 @@ install_v2ray() {
   if [[ $(read_json /usr/local/etc/v2ray/config.json '.inbounds[0].streamSettings.network') != "domainsocket" ]]; then
     colorEcho ${BLUE} "Setting v2Ray"
     wget -q https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/config/v2ray.json -O /tmp/v2ray.json
-    sed -i "s/FAKEPORT/$(($RANDOM + 10000))/g" /tmp/v2ray.json
     sed -i "s/FAKEUUID/$(cat '/proc/sys/kernel/random/uuid')/g" /tmp/v2ray.json
     ${sudoCmd} /bin/cp -f /tmp/v2ray.json /usr/local/etc/v2ray/config.json
   fi
 
-  colorEcho ${BLUE} "Setting tls-shunt-proxy"
-  set_proxy
 
   colorEcho ${BLUE} "Setting caddy"
   set_caddy
 
-  colorEcho ${BLUE} "Building dummy web site"
-  build_web
 
   # kill process occupying port 80
   ${sudoCmd} kill -9 $(lsof -t -i:80) 2>/dev/null
@@ -567,7 +572,7 @@ install_v2ray() {
   ${sudoCmd} systemctl daemon-reload
   ${sudoCmd} systemctl reset-failed
 
-  colorEcho ${GREEN} "安装 TCP+TLS+WEB 成功!"
+  colorEcho ${GREEN} "安装 WS+TLS+WEB 成功!"
 
   local V2_DOMAIN="$(read_json /usr/local/etc/v2script/config.json '.v2ray.tlsHeader')"
   local uuid_tcp="$(read_json /usr/local/etc/v2ray/config.json '.inbounds[0].settings.clients[0].id')"
