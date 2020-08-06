@@ -313,10 +313,10 @@ $(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json):80 {
 EOF
   elif [[ "$(read_json /usr/local/etc/v2script/config.json '.v2ray.installed')" == "true" ]]; then
     cat >> ${caddyserver_file} <<-EOF
-$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json):80 {
+$(jq --raw-output '.v2ray.tlsHeader' /usr/local/etc/v2script/config.json):80 {
     redir https://$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json){uri}
 }
-$(jq --raw-output '.trojan.tlsHeader' /usr/local/etc/v2script/config.json) {
+$(jq --raw-output '.v2ray.tlsHeader' /usr/local/etc/v2script/config.json) {
     tls lineair069@gmail.com
     gzip
 timeouts none
