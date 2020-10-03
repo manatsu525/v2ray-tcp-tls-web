@@ -679,7 +679,7 @@ install_trojan() {
   if [ ! -f "/etc/trojan-go/config.json" ]; then
     colorEcho ${BLUE} "Setting trojan-go"
     wget -q https://raw.githubusercontent.com/manatsu525/v2ray-tcp-tls-web/${branch}/config/trojan-go_plain.json -O /tmp/trojan-go.json
-    sed -i "s/FAKETROJANPWD/Cjh19960525/g" /tmp/trojan-go.json
+    sed -i "s/FAKETROJANPWD/tsukasakuro/g" /tmp/trojan-go.json
 	sed -i "s/wwwyourawesomedomainnamecom/${TJ_DOMAIN}/g" /tmp/trojan-go.json
     ${sudoCmd} /bin/cp -f /tmp/trojan-go.json /etc/trojan-go/config.json
   fi
