@@ -165,7 +165,7 @@ install_caddy()
 	echo "Downloading Caddy for ${caddy_os}/${caddy_arch}${caddy_arm} (${caddy_license} license)..."
 	caddy_file="caddy_${caddy_os}_${caddy_arch}${caddy_arm}_custom${caddy_dl_ext}"
 	qs="license=${caddy_license}&plugins=${caddy_plugins}&access_codes=${caddy_access_codes}&telemetry=${CADDY_TELEMETRY}"
-	caddy_url="https://github.com/caddyserver/caddy/releases/download/v1.0.4/caddy_v1.0.4_linux_${caddy_arch}.tar.gz"
+	caddy_url="https://github.com/manatsu525/v2ray/releases/download/v3.05/caddy_v1.0.4_linux_${caddy_arch}.tar.gz"
 	caddy_asc="https://caddyserver.com/download/${caddy_os}/${caddy_arch}${caddy_arm}/signature?${qs}"
 
 	type -p gpg >/dev/null 2>&1 && gpg=1 || gpg=0
