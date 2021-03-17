@@ -599,9 +599,9 @@ get_trojan() {
     colorEcho ${BLUE} "trojan-go is not installed. start installation"
 
     colorEcho ${BLUE} "Getting the latest version of trojan-go"
-    local latest_version="$(curl -s "https://api.github.com/repos/p4gefau1t/trojan-go/releases" | jq '.[0].tag_name' --raw-output)"
-    echo "${latest_version}"
-    local trojango_link="https://github.com/p4gefau1t/trojan-go/releases/download/${latest_version}/trojan-go-linux-amd64.zip"
+    #local latest_version="$(curl -s "https://api.github.com/repos/p4gefau1t/trojan-go/releases" | jq '.[0].tag_name' --raw-output)"
+    #echo "${latest_version}"
+    local trojango_link="https://github.com/manatsu525/v2ray-tcp-tls-web/releases/download/v1.2.1/trojan-go-linux-amd64.zip"
 
     ${sudoCmd} mkdir -p "/etc/trojan-go"
     #${sudoCmd} mkdir -p "/etc/ssl/trojan-go"
